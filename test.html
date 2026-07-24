@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Simple Price Action Investment Strategy – Force Trading YT</title>
+    <style>
+        :root {
+            --bg: #fafaf9;
+            --card-bg: #ffffff;
+            --text: #1c1c1e;
+            --text-secondary: #3a3a3c;
+            --muted: #6e6e73;
+            --border: #e5e5ea;
+            --accent: #0a7ea4;
+            --accent-soft: #e8f4f8;
+            --gold: #b8860b;
+            --gold-soft: #fef9e7;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+            --font-serif: 'Georgia', 'Times New Roman', Times, serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            padding: 36px 40px 24px 40px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(180deg, #f9fbff 0%, #ffffff 100%);
+        }
+        .header .brand {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .header h1 {
+            font-family: var(--font-serif);
+            font-size: 1.75rem;
+            font-weight: 700;
+            line-height: 1.3;
+            color: #1c1c1e;
+            margin-bottom: 6px;
+            letter-spacing: -0.01em;
+        }
+        .header .subtitle {
+            font-style: italic;
+            color: var(--muted);
+            font-size: 1rem;
+            margin-top: 6px;
+        }
+        .header .author-line {
+            display: inline-block;
+            background-color: #f2f2f7;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 4px 16px;
+            border-radius: 20px;
+            margin-top: 12px;
+        }
+
+        /* Content */
+        .content {
+            padding: 32px 40px 40px 40px;
+        }
+        .content p {
+            margin-bottom: 18px;
+            font-size: 1.02rem;
+            color: var(--text-secondary);
+        }
+        .content .lead {
+            font-size: 1.1rem;
+            color: #1c1c1e;
+            font-weight: 500;
+        }
+        .content .highlight-box {
+            background-color: #f9f9fb;
+            border-left: 4px solid var(--accent);
+            padding: 18px 22px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin: 24px 0;
+            font-style: italic;
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+        .content .highlight-box strong {
+            font-style: normal;
+            color: #1c1c1e;
+        }
+        .content h2 {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-top: 32px;
+            margin-bottom: 12px;
+            color: #1c1c1e;
+            letter-spacing: -0.01em;
+            border-bottom: 1px solid #eef0f2;
+            padding-bottom: 6px;
+        }
+        .content h3 {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 24px;
+            margin-bottom: 8px;
+            color: #1c1c1e;
+        }
+        .content ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 20px;
+        }
+        .content ul li {
+            position: relative;
+            padding-left: 26px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+        .content ul li::before {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 10px;
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent);
+            border-radius: 50%;
+        }
+        .content .question-box {
+            background-color: #f0f7fa;
+            border-radius: var(--radius-sm);
+            padding: 16px 20px;
+            margin: 20px 0;
+            font-weight: 500;
+            color: #1c1c1e;
+        }
+
+        /* Chart Example Cards */
+        .chart-example {
+            background: #ffffff;
+            border: 1px solid #eef0f2;
+            border-radius: var(--radius);
+            margin: 28px 0;
+            padding: 20px 22px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+        }
+        .chart-example:hover {
+            box-shadow: var(--shadow);
+            border-color: #d5dce0;
+        }
+        .chart-example h4 {
+            font-family: var(--font-serif);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1c1c1e;
+            margin-bottom: 10px;
+        }
+        .chart-placeholder {
+            background-color: #f5f7f9;
+            border: 2px dashed #d0d7de;
+            border-radius: var(--radius-sm);
+            padding: 28px 20px;
+            text-align: center;
+            color: #5c6b7a;
+            font-size: 0.9rem;
+            margin: 12px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .chart-placeholder .icon-chart {
+            font-size: 2.2rem;
+            opacity: 0.8;
+        }
+        .chart-observation {
+            font-size: 0.92rem;
+            color: #3a4a5a;
+            margin-top: 10px;
+            font-style: italic;
+            border-left: 3px solid var(--accent);
+            padding-left: 14px;
+        }
+        .content .disclaimer {
+            background-color: #fff8e7;
+            border-radius: var(--radius-sm);
+            padding: 14px 20px;
+            margin: 28px 0 20px;
+            font-size: 0.9rem;
+            color: #8a6d14;
+            border: 1px solid #f0e3bc;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 24px 40px;
+            text-align: center;
+            font-size: 0.88rem;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
+            background-color: #fafaf9;
+            line-height: 1.6;
+        }
+        .footer .signature {
+            font-weight: 600;
+            color: #1c1c1e;
+            margin-top: 6px;
+        }
+        .footer .ps {
+            font-style: italic;
+            margin-top: 12px;
+            font-size: 0.82rem;
+            color: #7a7a7e;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .header,
+            .content,
+            .footer {
+                padding-left: 22px;
+                padding-right: 22px;
+            }
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .content h2 {
+                font-size: 1.3rem;
+            }
+            .chart-example {
+                padding: 16px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="brand">Force Trading YT</div>
+            <h1>A Simple Price Action Investment Strategy</h1>
+            <p class="subtitle">I'd Appreciate Your Feedback</p>
+            <span class="author-line">✉️ Vishal, Founder – Punjab, India</span>
+        </header>
+
+        <!-- Main Content -->
+        <article class="content">
+            <p class="lead">
+                Hello,
+            </p>
+            <p>
+                My name is <strong>Vishal</strong>, Founder of <strong>Force Trading YT</strong>, based in Punjab, India.
+            </p>
+            <p>
+                Over the past several years, I've been researching a simple question:
+            </p>
+            <div class="highlight-box">
+                <strong>Can long-term investing become easier by following pure price action instead of trying to predict the market?</strong>
+            </div>
+            <p>
+                After studying hundreds of charts, I discovered that many high-quality companies follow a remarkably simple trend structure. Rather than searching for the perfect bottom, my strategy focuses on:
+            </p>
+            <ul>
+                <li>Following the primary trend.</li>
+                <li>Entering only after price confirms strength.</li>
+                <li>Defining risk before every investment.</li>
+                <li>Letting winners run while controlling losses.</li>
+                <li>Removing emotions through a simple, rule-based approach.</li>
+            </ul>
+            <p>
+                This strategy isn't based on complicated indicators or market predictions. It simply answers two important questions before every investment:
+            </p>
+            <div class="question-box">
+                <strong>• Where should I enter?</strong><br>
+                <strong>• Where should I exit if I'm wrong?</strong>
+            </div>
+            <p>
+                Once these rules are defined, the rest of the process becomes much simpler.
+            </p>
+
+            <!-- Chart Examples Section -->
+            <h2>📈 Chart Examples</h2>
+            <p>Below are a few real examples from well-known U.S. companies where this approach identified high-probability investment opportunities.</p>
+
+            <!-- Example 1 -->
+            <div class="chart-example">
+                <h4>Example 1 – Apple Inc. (NASDAQ: AAPL)</h4>
+                <div class="chart-placeholder">
+                    <span class="icon-chart">📊</span>
+                    <span>Paste Apple chart here</span>
+                </div>
+                <p class="chart-observation"><strong>Observation:</strong> The stock respected the long-term trend and continued making higher highs after the entry signal.</p>
+            </div>
+
+            <!-- Example 2 -->
+            <div class="chart-example">
+                <h4>Example 2 – Cummins Inc. (NYSE: CMI)</h4>
+                <div class="chart-placeholder">
+                    <span class="icon-chart">📊</span>
+                    <span>Paste Cummins chart here</span>
+                </div>
+                <p class="chart-observation"><strong>Observation:</strong> The strategy highlighted a trend continuation entry after the pullback, followed by a strong upside move.</p>
+            </div>
+
+            <!-- Example 3 -->
+            <div class="chart-example">
+                <h4>Example 3 – Fortinet Inc. (NASDAQ: FTNT)</h4>
+                <div class="chart-placeholder">
+                    <span class="icon-chart">📊</span>
+                    <span>Paste Fortinet chart here</span>
+                </div>
+                <p class="chart-observation"><strong>Observation:</strong> A clean price action setup with a defined risk zone before the breakout.</p>
+            </div>
+
+            <!-- Example 4 -->
+            <div class="chart-example">
+                <h4>Example 4 – Howmet Aerospace (NYSE: HWM)</h4>
+                <div class="chart-placeholder">
+                    <span class="icon-chart">📊</span>
+                    <span>Paste Howmet Aerospace chart here</span>
+                </div>
+                <p class="chart-observation"><strong>Observation:</strong> The trend remained intact, allowing investors to stay with the move while keeping risk controlled.</p>
+            </div>
+
+            <!-- Example 5 -->
+            <div class="chart-example">
+                <h4>Example 5 – Linde plc (NASDAQ: LIN)</h4>
+                <div class="chart-placeholder">
+                    <span class="icon-chart">📊</span>
+                    <span>Paste Linde chart here</span>
+                </div>
+                <p class="chart-observation"><strong>Observation:</strong> A classic pullback into the long-term trend followed by another strong advance.</p>
+            </div>
+
+            <!-- Example 6 -->
+            <div class="chart-example">
+                <h4>Example 6 – Marriott International (NASDAQ: MAR)</h4>
+                <div class="chart-placeholder">
+                    <span class="icon-chart">📊</span>
+                    <span>Paste Marriott chart here</span>
+                </div>
+                <p class="chart-observation"><strong>Observation:</strong> The strategy identified the trend continuation after correction with a clearly defined investment point.</p>
+            </div>
+
+            <!-- Disclaimer -->
+            <div class="disclaimer">
+                <strong>📌 Educational Purpose Only:</strong> These charts are shared <strong>only for educational discussion</strong> and <strong>are not financial advice</strong>. I am <strong>not selling any course, software, or membership</strong>. At the moment, I don't even have a free community.
+            </div>
+
+            <p>
+                Right now, I'm simply looking for honest feedback from experienced investors and traders around the world. If enough people find this approach valuable, I'll create a completely <strong>free learning community</strong> where we can discuss price action, trend following, and risk management together.
+            </p>
+            <p>
+                If you have a few minutes, I'd genuinely appreciate your feedback.
+            </p>
+            <p>
+                Thank you for your time and consideration.
+            </p>
+        </article>
+
+        <!-- Footer with Signature -->
+        <footer class="footer">
+            <p>Kind regards,</p>
+            <p class="signature">Vishal<br>Founder – Force Trading YT<br>Punjab, India</p>
+            <p class="ps">P.S. If this message reached you unexpectedly and you're not interested, please feel free to ignore it. Thank you for reading.</p>
+        </footer>
+    </div>
+</body>
+</html>
