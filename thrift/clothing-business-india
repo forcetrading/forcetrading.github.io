@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How I Started a Clothing Business With Just ₹150 (And Why You Can Too)</title>
+    <meta name="description" content="Learn how to start an online clothing business with just ₹150. A practical guide for students, housewives, job holders, and first-time entrepreneurs.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #fefefe;
+            --surface: #ffffff;
+            --surface-alt: #f8f9fa;
+            --text: #1a1a2e;
+            --text-secondary: #555770;
+            --text-muted: #8b8da5;
+            --accent: #1a56db;
+            --accent-hover: #1648c0;
+            --accent-light: #e8f0fe;
+            --gold: #b8860b;
+            --gold-light: #fdf3d0;
+            --border: #e8eaef;
+            --border-light: #f1f3f6;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.06);
+            --radius-sm: 8px;
+            --radius: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 24px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 0 24px 60px;
+            line-height: 1.85;
+            color: var(--text);
+            background: #fafbfc;
+            background-image:
+                radial-gradient(ellipse at 20% 0%, rgba(26, 86, 219, 0.03) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 100%, rgba(184, 134, 11, 0.03) 0%, transparent 60%);
+        }
+
+        /* ── Top accent bar ── */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #1a56db 0%, #4f8cf7 40%, #b8860b 100%);
+            z-index: 1000;
+        }
+
+        /* ── Header ── */
+        header {
+            padding: 40px 0 0;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--accent-light);
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 7px 16px;
+            border-radius: 50px;
+            margin-bottom: 24px;
+        }
+
+        .badge .dot {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            background: #22c55e;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+            }
+        }
+
+        h1 {
+            font-family: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
+            font-size: clamp(32px, 5vw, 46px);
+            color: #0d1117;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        h1 .highlight {
+            position: relative;
+            display: inline-block;
+        }
+
+        h1 .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: var(--gold-light);
+            z-index: -1;
+            border-radius: 3px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: clamp(16px, 2.5vw, 19px);
+            margin-bottom: 10px;
+            font-weight: 400;
+            line-height: 1.7;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .meta-divider {
+            width: 50px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+            margin: 28px auto 0;
+            opacity: 0.7;
+        }
+
+        /* ── Section cards ── */
+        .content-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 36px 34px;
+            margin: 32px 0;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow var(--transition), transform var(--transition);
+        }
+
+        .content-section:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .content-section.alt {
+            background: var(--surface-alt);
+            border-color: var(--border-light);
+        }
+
+        h2 {
+            font-family: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
+            font-size: clamp(22px, 3.5vw, 28px);
+            color: #0d1117;
+            margin-bottom: 18px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            line-height: 1.3;
+        }
+
+        h3 {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 18px;
+            color: #1a1a2e;
+            margin: 24px 0 10px;
+            font-weight: 700;
+        }
+
+        p {
+            margin-bottom: 14px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        p.lead {
+            font-size: 17px;
+            color: #3a3d55;
+            font-weight: 500;
+        }
+
+        /* ── Staggered list (the "You don't need" lines) ── */
+        .stagger-list {
+            list-style: none;
+            padding: 0;
+            margin: 16px 0 20px;
+        }
+
+        .stagger-list li {
+            font-size: 18px;
+            font-weight: 600;
+            color: #c0392b;
+            padding: 6px 0;
+            position: relative;
+            padding-left: 28px;
+            letter-spacing: 0.01em;
+        }
+
+        .stagger-list li::before {
+            content: '✕';
+            position: absolute;
+            left: 0;
+            top: 6px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #e74c3c;
+            opacity: 0.7;
+        }
+
+        /* ── Check list ── */
+        .check-list {
+            list-style: none;
+            padding: 0;
+            margin: 16px 0 20px;
+        }
+
+        .check-list li {
+            padding: 9px 0 9px 32px;
+            position: relative;
+            color: var(--text-secondary);
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .check-list li:last-child {
+            border-bottom: none;
+        }
+
+        .check-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 14px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+        }
+
+        .check-list li::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 19px;
+            width: 8px;
+            height: 5px;
+            border-left: 2px solid #4caf50;
+            border-bottom: 2px solid #4caf50;
+            transform: rotate(-45deg);
+        }
+
+        /* ── Numbered growth steps ── */
+        .growth-steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 18px 0;
+            list-style: none;
+            padding: 0;
+        }
+
+        .growth-steps li {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 9px 18px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text);
+            white-space: nowrap;
+            transition: all var(--transition);
+            cursor: default;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .growth-steps li:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        /* ── Quote block ── */
+        .insight-block {
+            background: linear-gradient(135deg, #fef9f0 0%, #fdf6e8 100%);
+            border-left: 4px solid var(--gold);
+            border-radius: 0 var(--radius) var(--radius) 0;
+            padding: 20px 24px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #5c4a1f;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .insight-block strong {
+            color: #3d2e0a;
+        }
+
+        /* ── CTA Section ── */
+        .cta-wrapper {
+            margin: 50px 0 20px;
+        }
+
+        .cta {
+            background: linear-gradient(145deg, #0d1b3e 0%, #111f45 40%, #0a162e 100%);
+            color: #e8edf5;
+            padding: 44px 38px;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
+        }
+
+        .cta::after {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            left: -60px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(184, 134, 11, 0.08) 0%, transparent 70%);
+        }
+
+        .cta h2 {
+            color: #ffffff;
+            margin-top: 0;
+            font-family: 'Playfair Display', 'Georgia', serif;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta h3 {
+            color: #c5d0e6;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta p {
+            color: #bcc7de;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 16px;
+            margin: 18px 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta ul li {
+            color: #d4dcec;
+            font-size: 14px;
+            padding: 5px 0;
+            font-weight: 500;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            padding: 15px 26px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 0.01em;
+            transition: all var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+
+        .button-primary {
+            background: #ffffff;
+            color: #0d1b3e;
+            box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
+        }
+
+        .button-primary:hover {
+            background: #f0f2f8;
+            box-shadow: 0 8px 28px rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .button-secondary {
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.35);
+        }
+
+        .button-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .button-icon {
+            font-size: 18px;
+        }
+
+        /* ── Footer ── */
+        footer {
+            margin-top: 40px;
+            border-top: 1px solid var(--border);
+            padding-top: 24px;
+            color: var(--text-muted);
+            font-size: 13px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        footer .keywords {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        footer .keywords span {
+            background: var(--surface-alt);
+            border: 1px solid var(--border-light);
+            border-radius: 50px;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: 0.02em;
+        }
+
+        /* ── Numbered section marker ── */
+        .section-number {
+            display: inline-block;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent);
+            background: var(--accent-light);
+            padding: 3px 10px;
+            border-radius: 50px;
+            letter-spacing: 0.04em;
+            margin-bottom: 8px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 640px) {
+            body {
+                padding: 0 14px 40px;
+            }
+            .content-section {
+                padding: 24px 18px;
+                border-radius: var(--radius);
+                margin: 20px 0;
+            }
+            .cta {
+                padding: 28px 20px;
+                border-radius: var(--radius-lg);
+            }
+            .cta ul {
+                grid-template-columns: 1fr;
+            }
+            .button-row {
+                flex-direction: column;
+            }
+            .button {
+                justify-content: center;
+                text-align: center;
+            }
+            .growth-steps {
+                gap: 6px;
+            }
+            .growth-steps li {
+                padding: 7px 14px;
+                font-size: 12px;
+            }
+            h1 {
+                font-size: 28px;
+            }
+            .stagger-list li {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .cta ul {
+                grid-template-columns: 1fr;
+            }
+            .growth-steps li {
+                font-size: 11px;
+                padding: 6px 10px;
+            }
+            .content-section {
+                padding: 20px 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ═══════════════ HEADER ═══════════════ -->
+    <header>
+        <div class="badge">
+            <span class="dot"></span> Free Guide for First-Time Entrepreneurs
+        </div>
+        <h1>
+            How I Started a Clothing Business<br>With Just <span class="highlight">₹150</span>
+        </h1>
+        <p class="subtitle">
+            A practical blueprint for students, job holders, housewives, and first-time entrepreneurs who want to build an online clothing business — without renting a shop or investing thousands.
+        </p>
+        <div class="meta-divider"></div>
+    </header>
+
+    <!-- ═══════════════ SECTION 1 ═══════════════ -->
+    <div class="content-section">
+        <span class="section-number">PART 1</span>
+        <p class="lead">A lot of people believe they need a large investment before they can start a business.</p>
+
+        <ul class="stagger-list">
+            <li>A shop.</li>
+            <li>A warehouse.</li>
+            <li>Staff.</li>
+            <li>A website.</li>
+        </ul>
+
+        <p>For years, that was considered normal.</p>
+        <p><strong>Today, it isn't.</strong></p>
+        <p>The internet has quietly changed how small businesses are built. A smartphone, an internet connection, and a few good products are often enough to make your first sale.</p>
+
+        <div class="insight-block">
+            💡 <strong>Key insight:</strong> If you've been waiting because you think you don't have enough money, this article may change your perspective.
+        </div>
+    </div>
+
+    <!-- ═══════════════ SECTION 2 ═══════════════ -->
+    <div class="content-section alt">
+        <span class="section-number">PART 2</span>
+        <h2>Why Clothing Is One of the Best Businesses for Beginners</h2>
+
+        <p>Unlike many products that people buy once and forget, <strong>clothing creates repeat customers.</strong></p>
+        <p>People shop for festivals, birthdays, vacations, college, office wear, and special occasions throughout the year. That makes fashion one of the few industries where customers naturally return.</p>
+
+        <p>Another advantage is <strong>presentation.</strong></p>
+        <p>A single high-quality photo on Instagram or WhatsApp can often sell better than a long sales pitch. If you already spend time on social media, you're much closer to running a business than you think.</p>
+    </div>
+
+    <!-- ═══════════════ SECTION 3 ═══════════════ -->
+    <div class="content-section">
+        <span class="section-number">PART 3</span>
+        <h2>You Don't Need a Shop Anymore</h2>
+
+        <p>One of the biggest misconceptions about starting a clothing business is believing that you must rent a shop.</p>
+        <p><strong>You don't.</strong></p>
+        <p>Today your business can operate from your bedroom, hostel room, or even your kitchen table.</p>
+
+        <ul class="check-list">
+            <li>Your Instagram page becomes your <strong>showroom</strong>.</li>
+            <li>WhatsApp becomes your <strong>sales desk</strong>.</li>
+            <li>UPI becomes your <strong>payment counter</strong>.</li>
+            <li>Courier services become your <strong>delivery partner</strong>.</li>
+        </ul>
+
+        <p>Instead of spending lakhs on rent and interiors, you can focus on choosing great products, posting consistently, and building customer relationships.</p>
+    </div>
+
+    <!-- ═══════════════ SECTION 4 ═══════════════ -->
+    <div class="content-section alt">
+        <span class="section-number">PART 4</span>
+        <h2>Start Small Instead of Starting Perfect</h2>
+
+        <p>Many beginners think they should purchase hundreds of products before launching. <strong>That only increases pressure and financial risk.</strong></p>
+
+        <p>A better approach is simple:</p>
+        <ul class="check-list">
+            <li>Buy a few products.</li>
+            <li>Take attractive photos.</li>
+            <li>Post them online.</li>
+            <li>Sell them.</li>
+            <li>Reinvest your profits.</li>
+        </ul>
+
+        <p>The goal of your first sale isn't becoming rich. <strong>It's proving that people are willing to buy from you.</strong></p>
+    </div>
+
+    <!-- ═══════════════ SECTION 5 ═══════════════ -->
+    <div class="content-section">
+        <span class="section-number">PART 5</span>
+        <h2>Social Media Is Your Biggest Asset</h2>
+
+        <p>Thousands of small sellers build successful businesses <strong>without spending money on advertising.</strong> They simply use platforms people already visit every day.</p>
+
+        <ul class="check-list">
+            <li><strong>Instagram</strong> attracts new customers.</li>
+            <li><strong>WhatsApp</strong> closes sales.</li>
+            <li><strong>Facebook Marketplace</strong> reaches local buyers.</li>
+            <li><strong>Telegram</strong> builds a loyal customer community.</li>
+        </ul>
+
+        <p>Together these platforms become your complete online marketing system.</p>
+    </div>
+
+    <!-- ═══════════════ SECTION 6 ═══════════════ -->
+    <div class="content-section alt">
+        <span class="section-number">PART 6</span>
+        <h2>Growth Happens Step by Step</h2>
+
+        <p>Every successful clothing business started somewhere. The first milestone isn't 1,000 products. <strong>It's the first three.</strong></p>
+
+        <p>As your confidence grows, your business can evolve through stages:</p>
+
+        <ul class="growth-steps">
+            <li>3 Pieces</li>
+            <li>→</li>
+            <li>10 Pieces</li>
+            <li>→</li>
+            <li>25 Pieces</li>
+            <li>→</li>
+            <li>50 Pieces</li>
+            <li>→</li>
+            <li>100 Pieces</li>
+            <li>→</li>
+            <li>500 Pieces</li>
+            <li>→</li>
+            <li>1,000+ Pieces</li>
+        </ul>
+
+        <p>Each stage teaches photography, customer service, branding, pricing, packaging, and business management.</p>
+    </div>
+
+    <!-- ═══════════════ SECTION 7 ═══════════════ -->
+    <div class="content-section">
+        <span class="section-number">PART 7</span>
+        <h2>Small Businesses Have a Real Advantage</h2>
+
+        <p>Large brands have bigger budgets. <strong>Small businesses have something even more valuable.</strong></p>
+        <p>Speed.</p>
+        <p>You can reply faster, build trust quicker, test products immediately, and create personal relationships with customers.</p>
+
+        <div class="insight-block">
+            🎯 <strong>The truth:</strong> People don't always buy from the biggest brand. They often buy from the seller they <strong>trust</strong>.
+        </div>
+    </div>
+
+    <!-- ═══════════════ SECTION 8 ═══════════════ -->
+    <div class="content-section alt">
+        <span class="section-number">PART 8</span>
+        <h2>Consistency Wins</h2>
+
+        <p>Many businesses don't fail because the idea is bad. <strong>They fail because the owner stops too soon.</strong></p>
+        <p>One post won't change your business. One hundred useful posts might.</p>
+
+        <p style="font-weight:700;color:#0d1117;">
+            Keep learning. &nbsp;Keep improving. &nbsp;Keep showing up.
+        </p>
+    </div>
+
+    <!-- ═══════════════ FINAL THOUGHTS ═══════════════ -->
+    <div class="content-section">
+        <span class="section-number">CONCLUSION</span>
+        <h2>Final Thoughts</h2>
+
+        <p>Starting a business doesn't always require a loan, a shop, or years of planning.</p>
+        <p>Sometimes it starts with one simple decision.</p>
+        <p style="font-weight:600;color:#0d1117;">One product. &nbsp;One customer. &nbsp;One sale.</p>
+
+        <p>The best time to start was yesterday.</p>
+        <p><strong>The next best time is today.</strong></p>
+    </div>
+
+    <!-- ═══════════════ CTA ═══════════════ -->
+    <div class="cta-wrapper">
+        <div class="cta">
+            <h2>📖 Download the Complete Blueprint</h2>
+            <p style="font-size:16px;margin-bottom:20px;">If you're serious about building your own clothing business, I've created a detailed <strong style="color:#f0d78c;">Premium eBook</strong> that walks you through the complete process — from sourcing products to scaling your business.</p>
+
+            <h3>✨ Inside the eBook</h3>
+            <ul>
+                <li>✔ How to Start with Just ₹150</li>
+                <li>✔ Wholesale Supplier Sources</li>
+                <li>✔ Instagram Selling Strategy</li>
+                <li>✔ WhatsApp Business Guide</li>
+                <li>✔ Facebook Marketplace Selling</li>
+                <li>✔ Telegram Marketing</li>
+                <li>✔ Pricing Strategy</li>
+                <li>✔ Product Photography Tips</li>
+                <li>✔ Packaging & Shipping Guide</li>
+                <li>✔ Customer Reply Templates</li>
+                <li>✔ Profit Tracking Sheets</li>
+                <li>✔ Scale from 3 Pieces to 1,000+ Pieces</li>
+            </ul>
+
+            <div class="button-row">
+                <!-- 👇 CLICKABLE DOWNLOAD BUTTON -->
+                <a class="button button-primary" href="https://drive.google.com/drive/folders/1slRkhAoTTcVErWEvBxTzEPk4Wx8NqhvA?usp=drive_link" target="_blank" rel="noopener">
+                    <span class="button-icon">📥</span> Download eBook Now
+                </a>
+                <!-- 👇 CLICKABLE WHATSAPP BUTTON WITH PRE-FILLED MESSAGE -->
+                <a class="button button-secondary" href="https://wa.me/918054393976?text=Hi%2C%20I%20want%20the%20Premium%20Clothing%20Business%20eBook%20(%E2%82%B9150%20startup).%20Please%20share%20details." target="_blank" rel="noopener">
+                    <span class="button-icon">💬</span> Order on WhatsApp
+                </a>
+            </div>
+            <p style="font-size:12px; margin-top:16px; opacity:0.7; z-index:1; position:relative;">🔗 Both buttons are fully clickable — instant access or direct chat.</p>
+        </div>
+    </div>
+
+    <!-- ═══════════════ FOOTER ═══════════════ -->
+    <footer>
+        <p style="margin-bottom:6px;"><strong>© 2026</strong> — Built for Indian entrepreneurs ready to start small and grow big.</p>
+        <div class="keywords">
+            <span>Clothing Business</span>
+            <span>Online Clothing Business India</span>
+            <span>Low Investment Business</span>
+            <span>Business Under ₹500</span>
+            <span>Home Business India</span>
+            <span>Fashion Business</span>
+            <span>Clothing Reseller</span>
+            <span>Instagram Selling</span>
+            <span>WhatsApp Business</span>
+            <span>Small Business Ideas</span>
+            <span>Side Hustle India</span>
+        </div>
+    </footer>
+
+</body>
+</html>
