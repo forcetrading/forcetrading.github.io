@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OCR Dashboard - Image to Text</title>
+
+    <!-- Tesseract.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js">
+    </script>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f9;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* ===== DASHBOARD CONTAINER ===== */
+        .dashboard {
+            max-width: 1300px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 25px 60px rgba(0, 20, 40, 0.15);
+            padding: 30px 35px 40px;
+            transition: all 0.3s ease;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin-bottom: 28px;
+            border-bottom: 2px solid #eef2f7;
+            padding-bottom: 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .header-left .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(145deg, #4a6cf7, #6a3de8);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 24px;
+            box-shadow: 0 6px 16px rgba(74, 108, 247, 0.30);
+        }
+
+        .header-left h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #1a2332;
+            letter-spacing: -0.3px;
+        }
+        .header-left h1 span {
+            color: #4a6cf7;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: #eef3fe;
+            color: #4a6cf7;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .badge i {
+            font-size: 15px;
+        }
+
+        .badge-success {
+            background: #e6f7ee;
+            color: #0d9e5a;
+        }
+
+        /* ===== STATS ROW ===== */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #f8faff;
+            border-radius: 18px;
+            padding: 16px 20px;
+            border: 1px solid #e9eef6;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: 0.2s ease;
+        }
+        .stat-card:hover {
+            border-color: #bcc9e0;
+            background: #f5f9ff;
+        }
+
+        .stat-card .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .stat-icon.blue {
+            background: linear-gradient(135deg, #4a6cf7, #6a3de8);
+        }
+        .stat-icon.green {
+            background: linear-gradient(135deg, #0d9e5a, #2bc48a);
+        }
+        .stat-icon.orange {
+            background: linear-gradient(135deg, #f59e0b, #f97316);
+        }
+        .stat-icon.purple {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+        }
+
+        .stat-info h4 {
+            font-size: 13px;
+            font-weight: 500;
+            color: #6b7a8f;
+            letter-spacing: 0.3px;
+        }
+        .stat-info p {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a2332;
+            margin-top: 2px;
+        }
+
+        /* ===== MAIN GRID ===== */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            margin-top: 6px;
+        }
+
+        @media (max-width: 960px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+        }
+
+        /* ===== CARD ===== */
+        .card {
+            background: #ffffff;
+            border-radius: 24px;
+            border: 1px solid #e9eef6;
+            padding: 24px 26px 28px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+            transition: 0.2s ease;
+        }
+        .card:hover {
+            border-color: #d5deec;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a2332;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+        .card-title i {
+            color: #4a6cf7;
+            font-size: 20px;
+        }
+        .card-title .sub {
+            font-size: 13px;
+            font-weight: 400;
+            color: #6b7a8f;
+            margin-left: auto;
+        }
+
+        /* ===== UPLOAD AREA ===== */
+        .upload-area {
+            border: 2px dashed #d0dae9;
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.25s ease;
+            background: #fafcff;
+            position: relative;
+        }
+        .upload-area:hover {
+            border-color: #4a6cf7;
+            background: #f5f9ff;
+        }
+        .upload-area.dragover {
+            border-color: #4a6cf7;
+            background: #eef3fe;
+            transform: scale(1.01);
+        }
+
+        .upload-area .upload-icon {
+            font-size: 52px;
+            color: #b8c8e0;
+            margin-bottom: 12px;
+        }
+        .upload-area h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a2332;
+        }
+        .upload-area p {
+            color: #6b7a8f;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+        .upload-area .browse-btn {
+            display: inline-block;
+            margin-top: 14px;
+            background: #4a6cf7;
+            color: #fff;
+            padding: 10px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .upload-area .browse-btn:hover {
+            background: #3a5cd9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(74, 108, 247, 0.30);
+        }
+
+        .upload-area input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* ===== PREVIEW ===== */
+        .preview-container {
+            margin-top: 18px;
+            display: none;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #f8faff;
+            border: 1px solid #e9eef6;
+            padding: 10px;
+        }
+        .preview-container.active {
+            display: block;
+        }
+        .preview-container img {
+            width: 100%;
+            max-height: 280px;
+            object-fit: contain;
+            border-radius: 12px;
+            display: block;
+            background: #fff;
+        }
+
+        /* ===== PROCESS BUTTON ===== */
+        .process-section {
+            margin-top: 18px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(145deg, #4a6cf7, #6a3de8);
+            border: none;
+            color: #fff;
+            padding: 12px 34px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.25s ease;
+            box-shadow: 0 6px 18px rgba(74, 108, 247, 0.25);
+            flex: 1;
+            justify-content: center;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(74, 108, 247, 0.35);
+        }
+        .btn-primary:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #d0dae9;
+            color: #1a2332;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-outline:hover {
+            border-color: #4a6cf7;
+            color: #4a6cf7;
+            background: #f5f9ff;
+        }
+
+        /* ===== PROGRESS ===== */
+        .progress-wrap {
+            margin-top: 16px;
+            display: none;
+        }
+        .progress-wrap.active {
+            display: block;
+        }
+
+        .progress-bar-bg {
+            height: 8px;
+            background: #e9eef6;
+            border-radius: 40px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #4a6cf7, #6a3de8);
+            border-radius: 40px;
+            transition: width 0.25s ease;
+        }
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #6b7a8f;
+            margin-top: 6px;
+        }
+
+        /* ===== TEXT OUTPUT ===== */
+        .output-area {
+            background: #f8faff;
+            border-radius: 18px;
+            padding: 18px 20px;
+            min-height: 200px;
+            border: 1px solid #e9eef6;
+            position: relative;
+            margin-top: 4px;
+        }
+        .output-area .placeholder {
+            color: #a8b6cc;
+            font-size: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 160px;
+            gap: 8px;
+        }
+        .output-area .placeholder i {
+            font-size: 36px;
+            color: #c8d4e6;
+        }
+
+        .output-area .result-text {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #1a2332;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .output-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-sm {
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: 0.2s;
+        }
+        .btn-sm.copy {
+            background: #eef3fe;
+            color: #4a6cf7;
+        }
+        .btn-sm.copy:hover {
+            background: #dce6fd;
+        }
+        .btn-sm.clear {
+            background: #f1f3f6;
+            color: #5a6a7e;
+        }
+        .btn-sm.clear:hover {
+            background: #e5e8ed;
+        }
+        .btn-sm.download {
+            background: #e6f7ee;
+            color: #0d9e5a;
+        }
+        .btn-sm.download:hover {
+            background: #d0f0e0;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a2332;
+            color: #fff;
+            padding: 14px 32px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 10px 36px rgba(0, 0, 0, 0.20);
+            display: none;
+            align-items: center;
+            gap: 10px;
+            z-index: 999;
+            animation: slideUp 0.35s ease;
+        }
+        .toast.show {
+            display: flex;
+        }
+        .toast i {
+            font-size: 18px;
+        }
+
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .dashboard {
+                padding: 18px 16px 24px;
+            }
+            .header-left h1 {
+                font-size: 20px;
+            }
+            .header-left .logo-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+            .stat-card {
+                padding: 12px 14px;
+            }
+            .stat-info p {
+                font-size: 17px;
+            }
+            .card {
+                padding: 18px 16px 22px;
+            }
+            .upload-area {
+                padding: 28px 16px;
+            }
+            .btn-primary {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            .output-area {
+                min-height: 150px;
+                padding: 14px 16px;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e9eef6;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #b8c8e0;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a0b2ce;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle" style="color:#4ade80;"></i>
+        <span id="toastMsg">Copied!</span>
+    </div>
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="dashboard">
+
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-left">
+                <div class="logo-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h1>OCR <span>Dashboard</span></h1>
+            </div>
+            <div class="header-right">
+                <span class="badge"><i class="fas fa-brain"></i> Tesseract.js v5</span>
+                <span class="badge badge-success"><i class="fas fa-circle" style="font-size:10px;"></i> Online</span>
+            </div>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-icon blue"><i class="fas fa-image"></i></div>
+                <div class="stat-info">
+                    <h4>Uploaded</h4>
+                    <p id="statUploads">0</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green"><i class="fas fa-font"></i></div>
+                <div class="stat-info">
+                    <h4>Words Found</h4>
+                    <p id="statWords">0</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon orange"><i class="fas fa-clock"></i></div>
+                <div class="stat-info">
+                    <h4>Last OCR</h4>
+                    <p id="statTime">—</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon purple"><i class="fas fa-file-alt"></i></div>
+                <div class="stat-info">
+                    <h4>Chars</h4>
+                    <p id="statChars">0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN GRID -->
+        <div class="main-grid">
+
+            <!-- LEFT: UPLOAD + PREVIEW -->
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-cloud-upload-alt"></i> Upload Image
+                    <span class="sub">JPG, PNG, WebP</span>
+                </div>
+
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon"><i class="fas fa-file-image"></i></div>
+                    <h3>Drop your image here</h3>
+                    <p>या क्लिक करके image select करें</p>
+                    <span class="browse-btn"><i class="fas fa-folder-open"></i> Browse</span>
+                    <input type="file" id="fileInput" accept="image/*" />
+                </div>
+
+                <!-- Preview -->
+                <div class="preview-container" id="previewContainer">
+                    <img id="previewImage" src="#" alt="Preview" />
+                </div>
+
+                <!-- Process -->
+                <div class="process-section">
+                    <button class="btn-primary" id="processBtn" disabled>
+                        <i class="fas fa-magic"></i> Convert to Text
+                    </button>
+                    <button class="btn-outline" id="clearBtn">
+                        <i class="fas fa-times"></i> Clear
+                    </button>
+                </div>
+
+                <!-- Progress -->
+                <div class="progress-wrap" id="progressWrap">
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-label">
+                        <span id="progressStatus">Processing…</span>
+                        <span id="progressPercent">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: OUTPUT -->
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-file-alt"></i> Extracted Text
+                    <span class="sub" id="charCount">0 characters</span>
+                </div>
+
+                <div class="output-area" id="outputArea">
+                    <div class="placeholder" id="placeholder">
+                        <i class="fas fa-image"></i>
+                        <span>Upload image and click <strong>"Convert to Text"</strong></span>
+                        <span style="font-size:13px;color:#b0c0d8;">Extracted text will appear here</span>
+                    </div>
+                    <div class="result-text" id="resultText" style="display:none;"></div>
+                </div>
+
+                <div class="output-actions">
+                    <button class="btn-sm copy" id="copyBtn"><i class="fas fa-copy"></i> Copy</button>
+                    <button class="btn-sm download" id="downloadBtn"><i class="fas fa-download"></i> Download .txt</button>
+                    <button class="btn-sm clear" id="clearOutputBtn"><i class="fas fa-eraser"></i> Clear</button>
+                </div>
+            </div>
+
+        </div><!-- /main-grid -->
+
+        <!-- Footer note -->
+        <div style="margin-top:28px;border-top:1px solid #e9eef6;padding-top:16px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:13px;color:#8a99b0;">
+            <span><i class="fas fa-shield-alt"></i> Client‑side OCR · कोई image server पर नहीं जाती</span>
+            <span><i class="fas fa-language"></i> Supports हिंदी, English &amp; 100+ languages</span>
+        </div>
+
+    </div><!-- /dashboard -->
+
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ----- DOM refs -----
+            const fileInput = document.getElementById('fileInput');
+            const uploadArea = document.getElementById('uploadArea');
+            const previewContainer = document.getElementById('previewContainer');
+            const previewImage = document.getElementById('previewImage');
+            const processBtn = document.getElementById('processBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const progressWrap = document.getElementById('progressWrap');
+            const progressFill = document.getElementById('progressFill');
+            const progressStatus = document.getElementById('progressStatus');
+            const progressPercent = document.getElementById('progressPercent');
+            const outputArea = document.getElementById('outputArea');
+            const placeholder = document.getElementById('placeholder');
+            const resultText = document.getElementById('resultText');
+            const charCount = document.getElementById('charCount');
+            const copyBtn = document.getElementById('copyBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const clearOutputBtn = document.getElementById('clearOutputBtn');
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+
+            // Stats
+            const statUploads = document.getElementById('statUploads');
+            const statWords = document.getElementById('statWords');
+            const statTime = document.getElementById('statTime');
+            const statChars = document.getElementById('statChars');
+
+            // ----- State -----
+            let currentFile = null;
+            let currentText = '';
+            let uploadCount = 0;
+            let isProcessing = false;
+
+            // ----- Helpers -----
+            function showToast(msg, icon = 'fa-check-circle') {
+                toastMsg.textContent = msg;
+                toast.querySelector('i').className = 'fas ' + icon;
+                toast.classList.add('show');
+                clearTimeout(toast._timer);
+                toast._timer = setTimeout(() => toast.classList.remove('show'), 2700);
+            }
+
+            function formatTime() {
+                const d = new Date();
+                return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            }
+
+            function updateStats(text) {
+                const words = text ? text.trim().split(/\s+/).filter(w => w.length > 0).length : 0;
+                const chars = text ? text.length : 0;
+                statWords.textContent = words;
+                statChars.textContent = chars;
+                charCount.textContent = chars + ' characters';
+            }
+
+            function resetProgress() {
+                progressWrap.classList.remove('active');
+                progressFill.style.width = '0%';
+                progressPercent.textContent = '0%';
+                progressStatus.textContent = 'Ready';
+            }
+
+            function setProgress(pct, status) {
+                progressWrap.classList.add('active');
+                const clamped = Math.min(100, Math.max(0, pct));
+                progressFill.style.width = clamped + '%';
+                progressPercent.textContent = Math.round(clamped) + '%';
+                if (status) progressStatus.textContent = status;
+            }
+
+            // ----- Display result -----
+            function displayResult(text) {
+                currentText = text || '';
+                if (text && text.trim().length > 0) {
+                    placeholder.style.display = 'none';
+                    resultText.style.display = 'block';
+                    resultText.textContent = text;
+                } else {
+                    placeholder.style.display = 'flex';
+                    resultText.style.display = 'none';
+                    resultText.textContent = '';
+                }
+                updateStats(text);
+                statTime.textContent = formatTime();
+                charCount.textContent = (text ? text.length : 0) + ' characters';
+            }
+
+            // ----- Clear everything -----
+            function clearAll() {
+                if (isProcessing) return;
+                currentFile = null;
+                fileInput.value = '';
+                previewContainer.classList.remove('active');
+                previewImage.src = '#';
+                processBtn.disabled = true;
+                resetProgress();
+                displayResult('');
+                statTime.textContent = '—';
+                // Reset stats (uploads count stays)
+                statWords.textContent = '0';
+                statChars.textContent = '0';
+                charCount.textContent = '0 characters';
+                // Re-show placeholder
+                placeholder.style.display = 'flex';
+                resultText.style.display = 'none';
+                resultText.textContent = '';
+                showToast('Cleared', 'fa-eraser');
+            }
+
+            // ----- OCR processing -----
+            async function processOCR() {
+                if (isProcessing) return;
+                if (!currentFile) {
+                    showToast('Please select an image first', 'fa-exclamation-circle');
+                    return;
+                }
+
+                isProcessing = true;
+                processBtn.disabled = true;
+                processBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing…';
+
+                // Reset output
+                displayResult('');
+                placeholder.style.display = 'flex';
+                resultText.style.display = 'none';
+                setProgress(5, 'Initializing OCR…');
+
+                try {
+                    const imageUrl = URL.createObjectURL(currentFile);
+                    const result = await Tesseract.recognize(imageUrl, 'hin+eng', {
+                        logger: (m) => {
+                            if (m.status === 'recognizing text') {
+                                const pct = Math.round(m.progress * 100);
+                                setProgress(pct, `Recognizing… ${pct}%`);
+                            } else if (m.status === 'loading tesseract core') {
+                                setProgress(10, 'Loading OCR engine…');
+                            } else if (m.status === 'initializing tesseract') {
+                                setProgress(20, 'Initializing…');
+                            } else if (m.status === 'loading language traineddata') {
+                                setProgress(30, 'Loading language data…');
+                            } else {
+                                // fallback
+                                const pct = m.progress ? Math.round(m.progress * 100) : 50;
+                                setProgress(pct, m.status || 'Processing…');
+                            }
+                        }
+                    });
+
+                    const text = result.data.text;
+                    displayResult(text);
+                    uploadCount++;
+                    statUploads.textContent = uploadCount;
+                    setProgress(100, '✅ Done!');
+                    showToast('Text extracted successfully!', 'fa-check-circle');
+
+                } catch (err) {
+                    console.error('OCR Error:', err);
+                    setProgress(0, '❌ Error');
+                    showToast('OCR failed: ' + (err.message || 'unknown error'), 'fa-exclamation-triangle');
+                    displayResult('');
+                } finally {
+                    isProcessing = false;
+                    processBtn.disabled = false;
+                    processBtn.innerHTML = '<i class="fas fa-magic"></i> Convert to Text';
+                    // if no file, keep disabled
+                    if (!currentFile) processBtn.disabled = true;
+                    // after 3s hide progress if not processing
+                    setTimeout(() => {
+                        if (!isProcessing) resetProgress();
+                    }, 3000);
+                }
+            }
+
+            // ----- File handler -----
+            function handleFile(file) {
+                if (!file || !file.type.startsWith('image/')) {
+                    showToast('Please select a valid image file', 'fa-exclamation-triangle');
+                    return;
+                }
+                currentFile = file;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewImage.src = e.target.result;
+                    previewContainer.classList.add('active');
+                    processBtn.disabled = false;
+                    // Clear old output
+                    displayResult('');
+                    placeholder.style.display = 'flex';
+                    resultText.style.display = 'none';
+                    resetProgress();
+                    showToast('Image loaded: ' + file.name, 'fa-image');
+                };
+                reader.readAsDataURL(file);
+                // Reset file input so same file can be re-uploaded
+                fileInput.value = '';
+            }
+
+            // ----- Events -----
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFile(e.target.files[0]);
+                }
+            });
+
+            // Drag & drop
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            uploadArea.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+            });
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFile(files[0]);
+                }
+            });
+
+            // Process button
+            processBtn.addEventListener('click', processOCR);
+
+            // Clear button (top)
+            clearBtn.addEventListener('click', clearAll);
+
+            // Copy
+            copyBtn.addEventListener('click', () => {
+                const text = currentText || resultText.textContent || '';
+                if (!text.trim()) {
+                    showToast('Nothing to copy', 'fa-exclamation-circle');
+                    return;
+                }
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('Copied to clipboard!', 'fa-copy');
+                }).catch(() => {
+                    // fallback
+                    const ta = document.createElement('textarea');
+                    ta.value = text;
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    ta.remove();
+                    showToast('Copied!', 'fa-copy');
+                });
+            });
+
+            // Download .txt
+            downloadBtn.addEventListener('click', () => {
+                const text = currentText || resultText.textContent || '';
+                if (!text.trim()) {
+                    showToast('No text to download', 'fa-exclamation-circle');
+                    return;
+                }
+                const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'extracted-text.txt';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
+                showToast('Downloaded!', 'fa-download');
+            });
+
+            // Clear output
+            clearOutputBtn.addEventListener('click', () => {
+                displayResult('');
+                placeholder.style.display = 'flex';
+                resultText.style.display = 'none';
+                statTime.textContent = '—';
+                showToast('Output cleared', 'fa-eraser');
+            });
+
+            // Keyboard shortcut: Ctrl+Enter to process
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    if (!processBtn.disabled) processOCR();
+                }
+            });
+
+            // Initial state
+            resetProgress();
+            displayResult('');
+            statTime.textContent = '—';
+
+            // If user presses Enter on upload area, trigger click
+            uploadArea.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    fileInput.click();
+                }
+            });
+            uploadArea.setAttribute('tabindex', '0');
+            uploadArea.setAttribute('role', 'button');
+
+            console.log('📸 OCR Dashboard ready — Upload an image and click "Convert to Text"');
+            console.log('💡 Tip: Press Ctrl+Enter to process');
+        })();
+    </script>
+
+</body>
+</html>
